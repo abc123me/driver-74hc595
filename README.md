@@ -10,4 +10,8 @@ A linux kernel driver for the 74HC595
 4. Write to `/dev/driver74hc595`
 5. Profit!
 
+## Issues
+
+ - Dosen't work with `fwrite` from but works with `write`
+ - No support for reset or output enable pins
 
