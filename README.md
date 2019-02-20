@@ -13,6 +13,6 @@ A linux kernel driver for the 74HC595
 ## Issues
 
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
-  - Possibly being caused by fwrite buffering when it's not supposed to
+   - Possibly being caused by fwrite buffering when it's not supposed to
  - No support for reset or output enable pins
 
