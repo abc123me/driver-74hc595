@@ -10,13 +10,21 @@ A linux kernel driver for the 74HC595
 4. Write to `/dev/driver74hc595`
 5. Profit!
 
+### Moduel parameters
+Name | Description
+-----|------------
+clock_pin | Sets the clock pin
+data_pin | Sets the data pin
+latch_pin | Sets the latch pin
+chain_len | Sets the amount of shift registers chained together
+
 ## Issues
 
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
    - Possibly being caused by fwrite buffering when it's not supposed to
  - No support for reset or output enable pins
  - ***NOT SUPPORTED ON KERNEL VERSION 3.4 AND ABOVE***
-
+ 
 ## Tested onfigurations
 Hardware | Kernel version | Dstribution | State
 ---------|----------------|-------------|------
