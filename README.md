@@ -19,7 +19,7 @@ latch_pin | Sets the latch pin                                  | `uint8_t`    |
 chain_len | Sets the amount of shift registers chained together | `uint64_t`   | 1
 delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
  
-## Tested onfigurations
+## Tested configurations
 Hardware      | Architecture | Kernel version | Dstribution | State
 --------------|--------------|----------------|-------------|------
 OrangePi Zero | armhf | 3.4 | Armbian Xenial | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
@@ -30,3 +30,4 @@ OrangePi Zero | armhf | 4.1 | Armbian Bionic | ![#ff0000](https://placehold.it/1
    - Possibly being caused by fwrite buffering when it's not supposed to
  - No support for reset or output enable pins
  - ***NOT SUPPORTED ON KERNEL VERSION 3.4 AND ABOVE***
+ - Only tested with GCC version 5, and probably don't work on anything else
