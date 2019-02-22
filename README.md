@@ -10,13 +10,13 @@ A linux kernel driver for the 74HC595
 4. Write to `/dev/driver74hc595`
 5. Profit!
 
-### Moduel parameters
-Name | Description
------|------------
-clock_pin | Sets the clock pin
-data_pin | Sets the data pin
-latch_pin | Sets the latch pin
-chain_len | Sets the amount of shift registers chained together
+### Module parameters
+Name      | Description                                         | Range
+----------|-----------------------------------------------------|--------------
+clock_pin | Sets the clock pin                                  | `uint8_t`
+data_pin  | Sets the data pin                                   | `uint8_t`
+latch_pin | Sets the latch pin                                  | `uint8_t`
+chain_len | Sets the amount of shift registers chained together | `uint64_t`
 
 ## Issues
 
