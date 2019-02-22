@@ -18,5 +18,5 @@ A linux kernel driver for the 74HC595
  - ***NOT SUPPORTED ON KERNEL VERSION 3.4 AND ABOVE***
 
 ## Tested onfigurations
- - OrangePi Zero: Kernel version 3.4, Armbian Xenial ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Good
- - OrangePi Zero: Kernel version 4.1, Armbian Bionic ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Nope
+ - OrangePi Zero: Kernel version 3.4, Armbian Xenial ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
+ - OrangePi Zero: Kernel version 4.1, Armbian Bionic ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Completely unsupported
