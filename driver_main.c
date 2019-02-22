@@ -20,11 +20,11 @@ MODULE_LICENSE("GPL");
 //Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
 typedef uint8_t byte;
 
-int init_module(void);
-void cleanup_module(void);
-void unregister_device(void);
-int register_device(void);
-int init_chip(void);
+int init_module();
+void cleanup_module();
+void unregister_device();
+int register_device();
+int init_chip();
 int device_open(struct inode* in, struct file* fp);
 int device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
