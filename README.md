@@ -11,12 +11,13 @@ A linux kernel driver for the 74HC595
 5. Profit!
 
 ### Module parameters
-Name      | Description                                         | Range
-----------|-----------------------------------------------------|--------------
-clock_pin | Sets the clock pin                                  | `uint8_t`
-data_pin  | Sets the data pin                                   | `uint8_t`
-latch_pin | Sets the latch pin                                  | `uint8_t`
-chain_len | Sets the amount of shift registers chained together | `uint64_t`
+Name      | Description                                         | Range        | Default value
+----------|-----------------------------------------------------|--------------|---------------
+clock_pin | Sets the clock pin                                  | `uint8_t`    | 3
+data_pin  | Sets the data pin                                   | `uint8_t`    | 0
+latch_pin | Sets the latch pin                                  | `uint8_t`    | 1
+chain_len | Sets the amount of shift registers chained together | `uint64_t`   | 1
+delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
  
 ## Tested onfigurations
 Hardware      | Architecture | Kernel version | Dstribution | State
