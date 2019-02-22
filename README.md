@@ -19,10 +19,10 @@ latch_pin | Sets the latch pin                                  | `uint8_t`
 chain_len | Sets the amount of shift registers chained together | `uint64_t`
  
 ## Tested onfigurations
-Hardware   | Architecture | Kernel version | Dstribution | State
------------|--------------|----------------|-------------|------
-OrangePi 0 | armhf | 3.4 | Armbian Xenial | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-OrangePi 0 | armhf | 4.1 | Armbian Bionic | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Unsupported
+Hardware      | Architecture | Kernel version | Dstribution | State
+--------------|--------------|----------------|-------------|------
+OrangePi Zero | armhf | 3.4 | Armbian Xenial | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
+OrangePi Zero | armhf | 4.1 | Armbian Bionic | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Unsupported
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
