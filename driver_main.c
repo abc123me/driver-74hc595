@@ -18,17 +18,17 @@ MODULE_LICENSE("GPL");
 	if(err) return err;\
 }
 //Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
-typedef uint8_t byte; 
+typedef uint8_t byte;
 
-int init_module();
-void cleanup_module();
-void unregister_device();
-int register_device();
-int init_chip();
+int init_module(void);
+void cleanup_module(void);
+void unregister_device(void);
+int register_device(void);
+int init_chip(void);
 int device_open(struct inode* in, struct file* fp);
 int device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
-ssize_t device_write(struct file* fp, char* buf, size_t cnt, loff_t* pos);
+ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos);
 
 //Device info
 static int device_file_major = 0;
@@ -114,7 +114,7 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 	printk("Read\n");
 	return 0;
 }
-ssize_t device_write(struct file* fp, char* buf, size_t cnt, loff_t* pos){
+ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	write595(&chip, buf, cnt);
 	printk("Wrote [");
 	for(size_t i = 0; i < cnt - 1; i++)
