@@ -27,7 +27,9 @@ OrangePi Zero | armhf | 4.1 | Armbian Bionic | ![#ff0000](https://placehold.it/1
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
-   - Possibly being caused by fwrite buffering when it's not supposed to
+   - Caused by fwrite buffering when it's not supposed to
+   - Easily fixed by using `setbuf(fp, NULL);` to disable buffering
+   - There is probably a flag or something I can set to fix this pernamently
  - No support for reset or output enable pins
  - ***NOT SUPPORTED ON KERNEL VERSION 3.4 AND ABOVE***
  - Only tested with GCC version 5, and probably don't work on anything else

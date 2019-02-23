@@ -5,21 +5,20 @@
 
 int main(){
 	int i = 0;
-	//FILE* fp = fopen("/dev/driver74hc595", "w");
-	int fp = open ("/dev/driver74hc595", O_WRONLY);
+	puts("Opening device!");
+	FILE* fp = fopen("/dev/driver74hc595", "w");
+	setbuf(fp, NULL);
 	if(!fp){
 		puts("Failed to open device");
 		return 1;
 	}
 	printf("Opened file\n");
 	while(1){
-		//fwrite(&i, 1, sizeof(int), fp);
-		write(fp, &i, 1);
 		printf("Wrote %i\n", i);
+		fwrite(&i, sizeof(int), 1, fp);
 		usleep(1000 * 100);
 		i++;
 	}
-	//fclose(fp);
-	close(fp);
+	fclose(fp);
 	return 0;
 }

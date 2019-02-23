@@ -2,6 +2,7 @@
 #include "linux/kernel.h"
 #include "linux/types.h"
 #include "linux/fs.h"
+#include "linux/fcntl.h"
 #include "linux/uaccess.h"
 #include "linux/device.h"
 #include "linux/gpio.h"
@@ -26,7 +27,7 @@ void unregister_device();
 int register_device();
 int init_chip();
 int device_open(struct inode* in, struct file* fp);
-int device_close(struct inode* in, struct file* fp);
+void device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos);
 
@@ -36,7 +37,7 @@ static char* device_file_name = "driver74hc595";
 //Device and associated classes
 static struct class* cl = NULL;
 static struct device* dev = NULL;
-static dev_t mydev;
+static dev_t devt;
 static struct file_operations driver_fops = {
 	.owner = THIS_MODULE,
 	.read = device_read,
@@ -80,34 +81,34 @@ int init_chip(){
 int register_device(){
 	int result = 0;
 	printk("Registering device!\n");
-	result = register_chrdev(0, device_file_name, &driver_fops );
+	result = register_chrdev(0, device_file_name, &driver_fops);
 	if(result < 0){
 		printk("Can\'t register character device (errorcode = %i)\n", result);
 		return result;
         }
 	device_file_major = result;
 	printk("Registered device with major number = %i and minor numbers 0...255\n", device_file_major);
-	mydev = MKDEV(device_file_major, 0);
-        register_chrdev_region(mydev, 1, device_file_name);
+	devt = MKDEV(device_file_major, 0);
+        register_chrdev_region(devt, 1, device_file_name);
         cl = class_create(THIS_MODULE, "new");
-        dev = device_create(cl, NULL, mydev, NULL, device_file_name);
+        dev = device_create(cl, NULL, devt, NULL, device_file_name);
 	return 0;
 }
 void unregister_device(){
 	printk("Unregistering device\n");
 	if(device_file_major != 0)
 		unregister_chrdev(device_file_major, device_file_name);
-	device_destroy(cl, mydev);
+	device_destroy(cl, devt);
 	class_unregister(cl);
 	class_destroy(cl);
 	printk("Unregistered device\n");
 }
+void device_close(struct inode* in, struct file* fp){
+	printk("Closed\n");
+}
 int device_open(struct inode* in, struct file* fp){
 	printk("Opened\n");
-	return 0;
-}
-int device_close(struct inode* in, struct file* fp){
-	printk("Closed\n");
+//	fp->f_flags |= O_NONBLOCK;
 	return 0;
 }
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
@@ -122,4 +123,3 @@ ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	printk("%i] to 74HC595\n", buf[cnt - 1]);
 	return cnt;
 }
-
