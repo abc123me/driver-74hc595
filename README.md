@@ -22,9 +22,9 @@ delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   |
 ## Tested configurations
 Hardware         | Architecture | Kernel version    | Dstribution | State
 -----------------|--------------|-------------------|-------------|------
-OrangePi Zero    | armhf | 3.4  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-Raspberry Pi 2   | arm   | 4.14 | Raspbian Stretch  | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) In progress
-OrangePi Zero    | armhf | 4.1  | Armbian Bionic    | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) In progress
+OrangePi Zero    | armhf | 3.4  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Well supported
+OrangePi Zero    | armhf | 4.1  | Armbian Bionic    | ![#ff5500](https://placehold.it/15/ffff00/000000?text=+) In progress
+Raspberry Pi 2   | arm   | 4.14 | Raspbian Stretch  | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) Unofficially supported
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
