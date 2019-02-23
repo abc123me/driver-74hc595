@@ -24,7 +24,7 @@ Hardware         | Architecture | Kernel version    | Dstribution | State
 -----------------|--------------|-------------------|-------------|------
 OrangePi Zero    | armhf | 3.4  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Well supported
 OrangePi Zero    | armhf | 4.1  | Armbian Bionic    | ![#ff5500](https://placehold.it/15/ff5500/000000?text=+) In progress
-Raspberry Pi 2   | arm   | 4.14 | Raspbian Stretch  | ![#ffff00](https://placehold.it/15/55ff00/000000?text=+) Supported
+Raspberry Pi 2   | arm   | 4.14 | Raspbian Stretch  | ![#55ff00](https://placehold.it/15/55ff00/000000?text=+) Supported
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
