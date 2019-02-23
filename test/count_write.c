@@ -3,7 +3,7 @@
 #include "fcntl.h"
 #include "unistd.h"
 
-int main(){
+int main(int argc, char** argv){
 	int i = 0;
 	puts("Opening device!");
 	int fp = open("/dev/driver74hc595", O_WRONLY);
@@ -13,9 +13,9 @@ int main(){
 	}
 	printf("Opened file\n");
 	while(1){
-		write(fp, &i, 1);
+		write(fp, &i, 2);
 		printf("Wrote %i\n", i);
-		usleep(1000 * 100);
+		usleep(1000 * 1);
 		i++;
 	}
 	close(fp);

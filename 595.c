@@ -83,12 +83,8 @@ uint8_t writeb595(struct Chip74HC595* chip, uint8_t data){
 }
 uint8_t write595(struct Chip74HC595* chip, uint8_t* data, uint8_t len){
 	if(chip == NULL) return 4;
-	for(int i = 0; i < len; i++){
+	for(int i = 0; i < len; i++)
 		writeb595(chip, data[i]);
-		printk("wrote byte %i\n", i);
-	}
-	printk("latched\n");
-	latch595(chip);
 	return 0;
 }
 void clock595(struct Chip74HC595* chip){

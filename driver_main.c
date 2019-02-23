@@ -52,6 +52,7 @@ _PARAM_MACRO(byte, latch_pin, 1, "The latch pin of the 74HC595");
 _PARAM_MACRO(byte, data_pin,  0, "The data pin of the 74HC595");
 _PARAM_MACRO(byte, chain_len, 1, "The amount of 74HC595's chained together");
 _PARAM_MACRO(ulong, delay, 50, "The amount of delay used for the clock line");
+//_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
 int init_module(){
 	_ERROR_FAIL_MACRO(register_device);
@@ -67,15 +68,14 @@ void cleanup_module(){
 int init_chip(){
 	//clock (3), data(0), latch(1)
 	uint32_t delay_u32 = delay;
-	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins)", clock_pin, data_pin, latch_pin, chain_len, delay_u32);
+	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins)\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32);
 	uint8_t res = init595(&chip, clock_pin, data_pin, latch_pin, chain_len);
 	if(res){
 		printk("Error initializing 595 (%s)!\n", getReason595(res));
 		return -1;
 	}
 	setSpeed595(&chip, delay_u32);
-	uint8_t dat = 0x00;
-	write595(&chip, &dat, 1);
+	reset595(&chip);
 	return 0;
 }
 int register_device(){
@@ -116,10 +116,12 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 	return 0;
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
-	write595(&chip, buf, cnt);
 	printk("Wrote [");
-	for(size_t i = 0; i < cnt - 1; i++)
+	for(size_t i = 0; i < cnt; i++){
 		printk("%i, ", buf[i]);
+		writeb595(&chip, buf[i]);
+	}
+	latch595(&chip);
 	printk("%i] to 74HC595\n", buf[cnt - 1]);
 	return cnt;
 }
