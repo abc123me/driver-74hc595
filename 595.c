@@ -66,14 +66,16 @@ uint8_t free595(struct Chip74HC595* chip){
 }
 uint8_t reset595(struct Chip74HC595* chip){
 	if(chip == NULL) return 4;
-	for(uint8_t i = 0; i < chip->chainLength; i++)
+	uint8_t i;
+	for(i = 0; i < chip->chainLength; i++)
 		writeb595(chip, 0);
 	latch595(chip);
 	return 0;
 }
 uint8_t writeb595(struct Chip74HC595* chip, uint8_t data){
 	if(chip == NULL) return 4;
-	for(int8_t i = 7; i >= 0; i--){
+	int8_t i;
+	for(i = 7; i >= 0; i--){
 		uint8_t val = 0;
 		if(data & (1 << i)) val = 255;
 		gpio_set_value(chip->dataPin, val);
@@ -83,7 +85,8 @@ uint8_t writeb595(struct Chip74HC595* chip, uint8_t data){
 }
 uint8_t write595(struct Chip74HC595* chip, uint8_t* data, uint8_t len){
 	if(chip == NULL) return 4;
-	for(int i = 0; i < len; i++)
+	uint8_t i;
+	for(i = 0; i < len; i++)
 		writeb595(chip, data[i]);
 	return 0;
 }
