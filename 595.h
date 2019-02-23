@@ -19,6 +19,7 @@ uint8_t free595(struct Chip74HC595* chip);
 uint8_t setSpeed595(struct Chip74HC595* chip, uint32_t delay);
 uint8_t write595(struct Chip74HC595* chip, uint8_t* dat, uint8_t len);
 uint8_t writeb595(struct Chip74HC595* chip, uint8_t dat);
+uint8_t reset595(struct Chip74HC595* chip);
 void latch595(struct Chip74HC595* chip);
 void clock595(struct Chip74HC595* chip);
 

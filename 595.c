@@ -50,6 +50,7 @@ uint8_t init595(struct Chip74HC595* chip, uint8_t clock, uint8_t data, uint8_t l
 	chip->dataPin = data;
 	chip->latchPin = latch;
 	chip->chainLength = chainLength;
+
 	_INIT_MACRO(chip->clockPin);
 	_INIT_MACRO(chip->dataPin);
 	_INIT_MACRO(chip->latchPin);
@@ -61,6 +62,13 @@ uint8_t free595(struct Chip74HC595* chip){
 	tryFreeGPIO(chip->clockPin);
 	tryFreeGPIO(chip->dataPin);
 	tryFreeGPIO(chip->latchPin);
+	return 0;
+}
+uint8_t reset595(struct Chip74HC595* chip){
+	if(chip == NULL) return 4;
+	for(uint8_t i = 0; i < chip->chainLength; i++)
+		writeb595(chip, 0);
+	latch595(chip);
 	return 0;
 }
 uint8_t writeb595(struct Chip74HC595* chip, uint8_t data){
@@ -77,9 +85,9 @@ uint8_t write595(struct Chip74HC595* chip, uint8_t* data, uint8_t len){
 	if(chip == NULL) return 4;
 	for(int i = 0; i < len; i++){
 		writeb595(chip, data[i]);
-		if(i % chip->chainLength == 0)
-			latch595(chip);
+		printk("wrote byte %i\n", i);
 	}
+	printk("latched\n");
 	latch595(chip);
 	return 0;
 }
