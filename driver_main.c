@@ -14,10 +14,7 @@ MODULE_LICENSE("GPL");
 	static type name = default_val;\
 	module_param(name, type, 0000);\
 	MODULE_PARM_DESC(name, desc);
-#define _ERROR_FAIL_MACRO(f) {\
-	int err = f();\
-	if(err) return err;\
-}
+
 //Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
 typedef uint8_t byte;
 
@@ -55,9 +52,20 @@ _PARAM_MACRO(ulong, delay, 50, "The amount of delay used for the clock line");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
 int init_module(){
-	_ERROR_FAIL_MACRO(register_device);
-	_ERROR_FAIL_MACRO(init_chip);
-	return 0;
+	int result = 0;
+	result = register_device();
+	if(result){
+		printk("register_device() returned a non-zero exit code!");
+		goto exit;
+	}
+	result = init_chip();
+	if(result){
+		printk("init_chip() returned a non-zero exit code!");
+		goto exit;
+	}
+	exit:
+	if(result) cleanup_module();
+	return result;
 }
 void cleanup_module(){
 	unregister_device();
@@ -79,25 +87,37 @@ int init_chip(){
 	return 0;
 }
 int register_device(){
-	int result = 0;
 	printk("Registering device!\n");
-	result = register_chrdev(0, device_file_name, &driver_fops);
-	if(result < 0){
-		printk("Can\'t register character device (errorcode = %i)\n", result);
-		return result;
-        }
-	device_file_major = result;
+	device_file_major = register_chrdev(0, device_file_name, &driver_fops);
+	if(device_file_major < 0){
+		printk("Failed to register character device (errorcode = %i)\n", device_file_major);
+		return device_file_major;
+	}
 	printk("Registered device with major number = %i and minor numbers 0...255\n", device_file_major);
 	devt = MKDEV(device_file_major, 0);
-        register_chrdev_region(devt, 1, device_file_name);
-        cl = class_create(THIS_MODULE, "new");
+        /*int result = register_chrdev_region(devt, 1, device_file_name);
+        if(result < 0){
+		printk("Failed to register a character device region (errorcode = %i)\n", result);
+		return result;
+	}*/
+	cl = class_create(THIS_MODULE, "new");
+	if(cl == NULL){
+		printk("Failed to create a class");
+		return -1;
+	}
         dev = device_create(cl, NULL, devt, NULL, device_file_name);
+	if(dev == NULL){
+		printk("Failed to create a device");
+		return -1;
+	}
 	return 0;
 }
 void unregister_device(){
 	printk("Unregistering device\n");
 	if(device_file_major != 0)
 		unregister_chrdev(device_file_major, device_file_name);
+	if(cl == NULL)
+		return;
 	device_destroy(cl, devt);
 	class_unregister(cl);
 	class_destroy(cl);
