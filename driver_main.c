@@ -20,11 +20,11 @@ int init_chip(void);
 
 //Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
 typedef uint8_t byte;
-_PARAM_MACRO(byte, clock_pin, 3, "The clock pin of the 74HC595");
-_PARAM_MACRO(byte, latch_pin, 1, "The latch pin of the 74HC595");
-_PARAM_MACRO(byte, data_pin,  0, "The data pin of the 74HC595");
-_PARAM_MACRO(byte, chain_len, 1, "The amount of 74HC595's chained together");
-_PARAM_MACRO(ulong, delay, 50, "The amount of delay used for the clock line");
+_PARAM_MACRO(byte, clock_pin, 3, "\tThe clock pin of the 74HC595");
+_PARAM_MACRO(byte, latch_pin, 1, "\tThe latch pin of the 74HC595");
+_PARAM_MACRO(byte, data_pin,  0, "\tThe data pin of the 74HC595");
+_PARAM_MACRO(byte, chain_len, 1, "\tThe amount of 74HC595's chained together");
+_PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
 static struct Chip74HC595 chip;
