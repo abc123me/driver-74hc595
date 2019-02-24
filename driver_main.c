@@ -19,6 +19,7 @@
 	}\
 }
 #define IOCTL_RESET_595_CMD 1
+#define IOCTL_GET_CHAIN_LENGTH 2
 
 int init_module(void);
 void cleanup_module(void);
@@ -116,6 +117,9 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	switch(cmd){
 		case IOCTL_RESET_595_CMD:
 			reset595(&chip);
+			break;
+		case IOCTL_GET_CHAIN_LENGTH:
+			copy_to_user(arg, &chain_len, 1);
 			break;
 		default:
 			printk("Invalid ioctl call to device - %x w/ arg %lx\n", cmd, arg);

@@ -19,9 +19,10 @@ chain_len | Sets the amount of shift registers chained together | `uint64_t`   |
 delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
 
 ### IOCTL syscall commands
-Name      | Description                    | Command | Arguments
-----------|--------------------------------|---------|-----------
-Reset     | Resets the register chain      | 1       | None
+Name              | Description                    | Command | Arguments
+------------------|--------------------------------|---------|-------------
+Reset             | Resets the register chain      | 1       | `void`
+Read chain length | Reads the chain length         | 2       | `uint8_t*`
 
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
