@@ -62,6 +62,7 @@ uint8_t init595(struct Chip74HC595* chip, uint8_t clock, uint8_t data, uint8_t l
 }
 uint8_t setResetPin595(struct Chip74HC595* chip, uint8_t resetPin){
 	if(chip == NULL) return E_NullPointer;
+	chip->resetPin = resetPin;
 	_INIT_MACRO(chip->resetPin);
 	return E_Success;
 }
