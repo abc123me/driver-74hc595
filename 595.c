@@ -71,11 +71,13 @@ uint8_t free595(struct Chip74HC595* chip){
 	tryFreeGPIO(chip->clockPin);
 	tryFreeGPIO(chip->dataPin);
 	tryFreeGPIO(chip->latchPin);
+	if(chip->resetPin >= 0) tryFreeGPIO(chip->resetPin);
+	if(chip->outputEnablePin >= 0) tryFreeGPIO(chip->outputEnablePin);
 	return E_Success;
 }
 uint8_t reset595(struct Chip74HC595* chip){
 	if(chip == NULL) return E_NullPointer;
-	if(chip->resetPin > 0){
+	if(chip->resetPin >= 0){
 		gpio_set_value(chip->resetPin, 0);
 		ndelay(chip->delay * 2);
 		gpio_set_value(chip->resetPin, 1);

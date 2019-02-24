@@ -6,6 +6,7 @@
 #include "device.h"
 #include "595.h"
 #include "modinfo.h"
+#include "ioctl_595.h"
 
 #define _PARAM_MACRO(type, name, default_val, desc)\
 	static type name = default_val;\
@@ -18,8 +19,6 @@
 		return -1;\
 	}\
 }
-#define IOCTL_RESET_595_CMD 1
-#define IOCTL_GET_CHAIN_LENGTH 2
 
 int init_module(void);
 void cleanup_module(void);
@@ -50,6 +49,7 @@ static struct file_operations driver_fops = {
 	.open = device_open,
 	.release = device_close,
 	.unlocked_ioctl = device_ioctl
+//	.compat_ioctl = device_ioctl
 };
 
 int init_module(){
@@ -114,11 +114,13 @@ ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	return cnt;
 }
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
+	printk("ioctl(fd, %i, %lx)\n", cmd, arg);
 	switch(cmd){
 		case IOCTL_RESET_595_CMD:
 			reset595(&chip);
 			break;
-		case IOCTL_GET_CHAIN_LENGTH:
+		case IOCTL_CHAIN_LEN_CMD:
+			printk("copy_to_user(%lx, %lx, 1)\n", arg, &chain_len);
 			copy_to_user(arg, &chain_len, 1);
 			break;
 		default:
