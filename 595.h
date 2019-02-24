@@ -4,6 +4,9 @@
 #include "linux/gpio.h"
 #include "linux/delay.h"
 
+enum Error595{
+	E_Success, E_InvalidPin, E_InvalidValue, E_NullPointer, E_RequestFailed, E_SetDirectionFailed
+};
 typedef struct Chip74HC595{
 	uint8_t latchPin, clockPin, dataPin;
 	uint8_t chainLength;
