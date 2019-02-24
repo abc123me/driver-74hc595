@@ -32,5 +32,4 @@ Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.i
    - Easily fixed by using `setbuf(fp, NULL);` to disable buffering
    - There is probably a flag or something I can set to fix this pernamently
  - No support for reset or output enable pins
- - ***NOT SUPPORTED ON KERNEL VERSION 3.4 AND ABOVE***
- - Only tested with GCC version 5, and probably don't work on anything else
+
