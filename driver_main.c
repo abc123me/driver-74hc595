@@ -5,22 +5,21 @@
 
 #include "device.h"
 #include "595.h"
+#include "modinfo.h"
 
-MODULE_LICENSE("GPL");
 #define _PARAM_MACRO(type, name, default_val, desc)\
 	static type name = default_val;\
 	module_param(name, type, 0000);\
 	MODULE_PARM_DESC(name, desc);
 
-//Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
-typedef uint8_t byte;
+#define IOCTL_RESET_595_CMD 1
 
 int init_module(void);
 void cleanup_module(void);
-
 int init_chip(void);
 
-//Chip
+//Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
+typedef uint8_t byte;
 _PARAM_MACRO(byte, clock_pin, 3, "The clock pin of the 74HC595");
 _PARAM_MACRO(byte, latch_pin, 1, "The latch pin of the 74HC595");
 _PARAM_MACRO(byte, data_pin,  0, "The data pin of the 74HC595");
@@ -35,12 +34,14 @@ int device_open(struct inode* in, struct file* fp);
 int device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos);
+long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg);
 static struct file_operations driver_fops = {
 	.owner = THIS_MODULE,
 	.read = device_read,
 	.write = device_write,
 	.open = device_open,
-	.release = device_close
+	.release = device_close,
+	.unlocked_ioctl = device_ioctl
 };
 
 int init_module(){
@@ -101,4 +102,14 @@ ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	latch595(&chip);
 	printk("%i] to 74HC595\n", buf[cnt - 1]);
 	return cnt;
+}
+long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
+	switch(cmd){
+		case IOCTL_RESET_595_CMD:
+			reset595(&chip);
+			break;
+		default:
+			return -1;
+	}
+	return 0;
 }
