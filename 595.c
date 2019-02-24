@@ -15,13 +15,15 @@
 	255: Unknown
 */
 char* getReason595(uint8_t error){
-        if(error == 0) return "no error";
-        if(error == 1) return "invalid pin";
-        if(error == 2) return "gpio_request() failed";
-        if(error == 3) return "gpio_direction_input/output() failed";
-        if(error == 4) return "pointer to chip is null";
-        if(error == 5) return "invalid value";
-        return "unknown";
+	switch(error){
+		case 0: return "no error";
+		case 1: return "invalid pin";
+		case 2: return "gpio_request() failed";
+		case 3: return "gpio_direction_input/output() failed";
+		case 4: return "pointer to chip is null";
+		case 5: return "invalid value";
+	}
+	return "unknown";
 }
 uint8_t tryInitGPIO(uint8_t pin, bool output){
 	if(gpio_is_valid(pin)){
