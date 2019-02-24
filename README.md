@@ -5,10 +5,8 @@ A linux kernel driver for the 74HC595
 ## Usage
 
 1. Compile with `make`
-2. Verify that `make` was succesful
-3. Insert the kernel module into the kernel using `insmod driver.ko <parameters>`
-4. Write to `/dev/chip74hc595`
-5. Profit!
+2. Insert the kernel module into the kernel using `insmod driver.ko <parameters>`
+3. Read/Write to `/dev/chip74hc595`
 
 ### Module parameters
 Name      | Description                                         | Range        | Default value
