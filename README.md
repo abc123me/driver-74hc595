@@ -35,3 +35,6 @@ Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.i
    - There is probably a flag or something I can set to fix this pernamently
  - No support for output enable pin
 
+### Contributors
+ - DefCon42
+ - Chuck C.
