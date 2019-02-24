@@ -62,8 +62,8 @@ uint8_t init595(struct Chip74HC595* chip, uint8_t clock, uint8_t data, uint8_t l
 }
 uint8_t setResetPin595(struct Chip74HC595* chip, uint8_t resetPin){
 	if(chip == NULL) return E_NullPointer;
+	_INIT_MACRO(resetPin);
 	chip->resetPin = resetPin;
-	_INIT_MACRO(chip->resetPin);
 	return E_Success;
 }
 uint8_t free595(struct Chip74HC595* chip){
@@ -76,15 +76,17 @@ uint8_t free595(struct Chip74HC595* chip){
 uint8_t reset595(struct Chip74HC595* chip){
 	if(chip == NULL) return E_NullPointer;
 	if(chip->resetPin > 0){
-		gpio_set_value(chip->resetPin, 1);
-		ndelay(chip->delay * 2);
 		gpio_set_value(chip->resetPin, 0);
 		ndelay(chip->delay * 2);
+		gpio_set_value(chip->resetPin, 1);
+		ndelay(chip->delay * 2);
+		printk("Reset using GPIO\n");
 	} else {
 		uint8_t i;
 		for(i = 0; i < chip->chainLength; i++)
 			writeb595(chip, 0);
 		latch595(chip);
+		printk("Reset using write zeroes\n");
 	}
 	return E_Success;
 }

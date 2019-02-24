@@ -6,5 +6,6 @@
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Jeremiah Lowe");
 MODULE_DESCRIPTION("A module to control a chain of 74HC595 shift registers");
+MODULE_VERSION("1.0");
 
 #endif

@@ -31,7 +31,7 @@ _PARAM_MACRO(byte, latch_pin, 1, "\tThe latch pin of the 74HC595");
 _PARAM_MACRO(byte, data_pin,  0, "\tThe data pin of the 74HC595");
 _PARAM_MACRO(int, reset_pin,  -1, "\tThe reset pin of the 74HC595, -1 for none");
 _PARAM_MACRO(byte, chain_len, 1, "\tThe amount of 74HC595's chained together");
-_PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line");
+_PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line (in ns)");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
 static struct Chip74HC595 chip;

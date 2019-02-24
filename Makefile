@@ -11,7 +11,7 @@ remake:
 	make clean
 	make all
 load:
-	sudo insmod $(name).ko clock_pin=15 data_pin=16 latch_pin=14 chain_len=2
+	sudo insmod $(name).ko clock_pin=15 data_pin=16 latch_pin=14 reset_pin=13 chain_len=2
 unload:
 	sudo rmmod $(name)
 reload:
