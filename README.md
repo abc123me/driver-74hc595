@@ -21,8 +21,8 @@ delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   |
 ### IOCTL syscall commands
 Name              | Description                    | Command (ioctl_595.h) | Arguments
 ------------------|--------------------------------|-----------------------|-------------
-Reset             | Resets the register chain      | IOCTL_RESET_595_CMD   | `void`
-Read chain length | Reads the chain length         | IOCTL_CHAIN_LEN_CMD   | `uint8_t*`
+Reset             | Resets the register chain      | `IOCTL_RESET_595_CMD` | `void`
+Read chain length | Reads the chain length         | `IOCTL_CHAIN_LEN_CMD` | `uint8_t*`
 
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
