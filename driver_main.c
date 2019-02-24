@@ -11,7 +11,13 @@
 	static type name = default_val;\
 	module_param(name, type, 0000);\
 	MODULE_PARM_DESC(name, desc);
-
+#define _CHIP_CALL_MACRO(func, err_msg) {\
+	uint8_t res = func;\
+	if(res) {\
+		printk("%s (%s)!\n", err_msg, getReason595(res));\
+		return res;\
+	}\
+}
 #define IOCTL_RESET_595_CMD 1
 
 int init_module(void);
@@ -23,6 +29,7 @@ typedef uint8_t byte;
 _PARAM_MACRO(byte, clock_pin, 3, "\tThe clock pin of the 74HC595");
 _PARAM_MACRO(byte, latch_pin, 1, "\tThe latch pin of the 74HC595");
 _PARAM_MACRO(byte, data_pin,  0, "\tThe data pin of the 74HC595");
+_PARAM_MACRO(int, reset_pin,  -1, "\tThe reset pin of the 74HC595, -1 for none");
 _PARAM_MACRO(byte, chain_len, 1, "\tThe amount of 74HC595's chained together");
 _PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
@@ -48,15 +55,15 @@ int init_module(){
 	int result = 0;
 	result = register_device(&dev, "chip74hc595", &driver_fops);
 	if(result){
-		printk("register_device() returned a non-zero exit code!");
+		printk("register_device() returned a non-zero exit code!\n");
 		goto exit;
 	}
 	result = init_chip();
 	if(result){
-		printk("init_chip() returned a non-zero exit code!");
+		printk("init_chip() returned a non-zero exit code!\n");
 		goto exit;
 	}
-	exit:
+	exit: 
 	if(result) cleanup_module();
 	return result;
 }
@@ -70,22 +77,21 @@ int init_chip(){
 	//clock (3), data(0), latch(1)
 	uint32_t delay_u32 = delay;
 	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins)\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32);
-	uint8_t res = init595(&chip, clock_pin, data_pin, latch_pin, chain_len);
-	if(res){
-		printk("Error initializing 595 (%s)!\n", getReason595(res));
-		return -1;
-	}
-	setSpeed595(&chip, delay_u32);
-	reset595(&chip);
+	_CHIP_CALL_MACRO(init595(&chip, clock_pin, data_pin, latch_pin, chain_len), "Error initializing chip");
+	if(reset_pin > 0) _CHIP_CALL_MACRO(setResetPin595(&chip, (uint8_t) reset_pin), "Error setting the reset pin");
+	_CHIP_CALL_MACRO(setSpeed595(&chip, delay_u32), "Error setting speed");
+	_CHIP_CALL_MACRO(reset595(&chip), "Error resetting chip");
 	return 0;
 }
 
+static bool device_already_open = false;
 int device_close(struct inode* in, struct file* fp){
-	printk("Closed\n");
+	device_already_open = false;
 	return 0;
 }
 int device_open(struct inode* in, struct file* fp){
-	printk("Opened\n");
+	if(device_already_open) return -1;
+	device_already_open = true;
 	return 0;
 }
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
@@ -109,6 +115,7 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 			reset595(&chip);
 			break;
 		default:
+			printk("Invalid ioctl call to device - %x w/ arg %lx\n", cmd, arg);
 			return -1;
 	}
 	return 0;
