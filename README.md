@@ -16,7 +16,11 @@ data_pin  | Sets the data pin                                   | `uint8_t`    |
 latch_pin | Sets the latch pin                                  | `uint8_t`    | 1
 chain_len | Sets the amount of shift registers chained together | `uint64_t`   | 1
 delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
- 
+### ioctl() commands
+Name      | Description                    | Command | Arguments
+----------|--------------------------------|---------|-----------
+Reset     | Resets the register chain      | 1       | None
+
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
 -----------------|----------|-------------------|---------------------------------------------------------------------
