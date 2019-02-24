@@ -1,5 +1,5 @@
 obj-m += driver.o
-driver-objs := driver_main.o 595.o
+driver-objs := driver_main.o 595.o device.o
 KVERSION = $(shell uname -r)
 
 all:
