@@ -6,7 +6,7 @@
 int main(){
 	int i = 0;
 	puts("Opening device!");
-	FILE* fp = fopen("/dev/driver74hc595", "w");
+	FILE* fp = fopen("/dev/chip74hc595", "w");
 	setbuf(fp, NULL);
 	if(!fp){
 		puts("Failed to open device");

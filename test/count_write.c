@@ -6,7 +6,7 @@
 int main(int argc, char** argv){
 	int i = 0;
 	puts("Opening device!");
-	int fp = open("/dev/driver74hc595", O_WRONLY);
+	int fp = open("/dev/chip74hc595", O_WRONLY);
 	if(fp <= 0){
 		puts("Failed to open device");
 		return 1;
