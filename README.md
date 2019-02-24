@@ -14,8 +14,10 @@ Name      | Description                                         | Range        |
 clock_pin | Sets the clock pin                                  | `uint8_t`    | 3
 data_pin  | Sets the data pin                                   | `uint8_t`    | 0
 latch_pin | Sets the latch pin                                  | `uint8_t`    | 1
+reset_pin | Sets the reset pin, if the pin < 0 then its ignored | `int16_t`    | -1 
 chain_len | Sets the amount of shift registers chained together | `uint64_t`   | 1
 delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
+
 ### IOCTL syscall commands
 Name      | Description                    | Command | Arguments
 ----------|--------------------------------|---------|-----------

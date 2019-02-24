@@ -15,7 +15,7 @@
 	uint8_t res = func;\
 	if(res) {\
 		printk("%s (%s)!\n", err_msg, getReason595(res));\
-		return res;\
+		return -1;\
 	}\
 }
 #define IOCTL_RESET_595_CMD 1
@@ -63,7 +63,7 @@ int init_module(){
 		printk("init_chip() returned a non-zero exit code!\n");
 		goto exit;
 	}
-	exit: 
+	exit:
 	if(result) cleanup_module();
 	return result;
 }
@@ -78,7 +78,10 @@ int init_chip(){
 	uint32_t delay_u32 = delay;
 	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins)\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32);
 	_CHIP_CALL_MACRO(init595(&chip, clock_pin, data_pin, latch_pin, chain_len), "Error initializing chip");
-	if(reset_pin > 0) _CHIP_CALL_MACRO(setResetPin595(&chip, (uint8_t) reset_pin), "Error setting the reset pin");
+	if(reset_pin > 0){
+		printk("Custom reset pin specified (%i)\n", reset_pin);
+		_CHIP_CALL_MACRO(setResetPin595(&chip, (uint8_t) reset_pin), "Error setting the reset pin");
+	}
 	_CHIP_CALL_MACRO(setSpeed595(&chip, delay_u32), "Error setting speed");
 	_CHIP_CALL_MACRO(reset595(&chip), "Error resetting chip");
 	return 0;
