@@ -49,7 +49,6 @@ static struct file_operations driver_fops = {
 	.open = device_open,
 	.release = device_close,
 	.unlocked_ioctl = device_ioctl
-//	.compat_ioctl = device_ioctl
 };
 
 int init_module(){
@@ -104,8 +103,8 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	printk("Wrote [");
-	size_t i;
-	for(i = 0; i < cnt; i++){
+	int64_t i;
+	for(i = cnt - 1; i >= 0; i--){
 		printk("%i, ", buf[i]);
 		writeb595(&chip, buf[i]);
 	}

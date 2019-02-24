@@ -82,13 +82,11 @@ uint8_t reset595(struct Chip74HC595* chip){
 		ndelay(chip->delay * 2);
 		gpio_set_value(chip->resetPin, 1);
 		ndelay(chip->delay * 2);
-		printk("Reset using GPIO\n");
 	} else {
 		uint8_t i;
 		for(i = 0; i < chip->chainLength; i++)
 			writeb595(chip, 0);
 		latch595(chip);
-		printk("Reset using write zeroes\n");
 	}
 	return E_Success;
 }
