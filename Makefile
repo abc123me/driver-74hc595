@@ -1,5 +1,6 @@
-obj-m += driver.o
-driver-objs := driver_main.o 595.o device.o
+name = mod595
+obj-m += $(name).o
+$(name)-objs := driver_main.o 595.o device.o
 KVERSION = $(shell uname -r)
 
 all:
@@ -10,9 +11,11 @@ remake:
 	make clean
 	make all
 load:
-	sudo insmod driver.ko clock_pin=15 data_pin=16 latch_pin=14 chain_len=2
+	sudo insmod $(name).ko clock_pin=15 data_pin=16 latch_pin=14 chain_len=2
 unload:
-	sudo rmmod driver
+	sudo rmmod $(name)
 reload:
 	make unload
 	make load
+info:
+	modinfo $(name).ko
