@@ -7,7 +7,7 @@ A linux kernel driver for the 74HC595
 1. Compile with `make`
 2. Verify that `make` was succesful
 3. Insert the kernel module into the kernel using `insmod driver.ko <parameters>`
-4. Write to `/dev/driver74hc595`
+4. Write to `/dev/chip74hc595`
 5. Profit!
 
 ### Module parameters
@@ -31,5 +31,5 @@ Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.i
    - Caused by fwrite buffering when it's not supposed to
    - Easily fixed by using `setbuf(fp, NULL);` to disable buffering
    - There is probably a flag or something I can set to fix this pernamently
- - No support for reset or output enable pins
+ - No support for output enable pin
 
