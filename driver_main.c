@@ -102,24 +102,23 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 	return 0;
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
-	printk("Wrote [");
+	//printk("Wrote [");
 	int64_t i;
 	for(i = cnt - 1; i >= 0; i--){
-		printk("%i, ", buf[i]);
+		//printk("%i, ", buf[i]);
 		writeb595(&chip, buf[i]);
 	}
 	latch595(&chip);
-	printk("%i] to 74HC595\n", buf[cnt - 1]);
+	//printk("%i] to 74HC595\n", buf[cnt - 1]);
 	return cnt;
 }
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
-	printk("ioctl(fd, %i, %lx)\n", cmd, arg);
 	switch(cmd){
 		case IOCTL_RESET_595_CMD:
 			reset595(&chip);
+			latch595(&chip);
 			break;
 		case IOCTL_CHAIN_LEN_CMD:
-			printk("copy_to_user(%lx, %lx, 1)\n", arg, &chain_len);
 			copy_to_user(arg, &chain_len, 1);
 			break;
 		default:
