@@ -47,7 +47,7 @@ uint8_t initSingle595(struct Chip74HC595* chip, uint8_t clock, uint8_t data, uin
 	return init595(chip, clock, data, latch, 1);
 }
 uint8_t init595(struct Chip74HC595* chip, uint8_t clock, uint8_t data, uint8_t latch, uint8_t chainLength){
-	if(chip == NULL) return 4;
+	if(chip == NULL) return E_NullPointer;
 	chip->clockPin = clock;
 	chip->dataPin = data;
 	chip->latchPin = latch;
