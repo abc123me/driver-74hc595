@@ -103,6 +103,8 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 	//printk("Wrote [");
+	if(cnt <= 0)
+		return 0;
 	int64_t i;
 	for(i = cnt - 1; i >= 0; i--){
 		//printk("%i, ", buf[i]);
