@@ -19,10 +19,12 @@ chain_len | Sets the amount of shift registers chained together | `uint64_t`   |
 delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
 
 ### IOCTL syscall commands
-Name              | Description                    | Command (ioctl_595.h) | Arguments
-------------------|--------------------------------|-----------------------|-------------
-Reset             | Resets the register chain      | `IOCTL_RESET_595_CMD` | `void`
-Read chain length | Reads the chain length         | `IOCTL_CHAIN_LEN_CMD` | `uint8_t*`
+Name              | Description                         | Command (ioctl_595.h)     | Arguments
+------------------|-------------------------------------|---------------------------|-------------
+Reset             | Resets the register chain           | `IOCTL_RESET_595`         | `void`
+Read chain length | Reads the chain length              | `IOCTL_READ_CHAIN_LENGTH` | `uint8_t*`
+Latch             | Manually latches the 595            | `IOCTL_MANUAL_LATCH`      | `void`
+Automatic latch   | Enables/Disables automatic latching | `IOCTL_SET_AUTO_LATCH`    | `bool`
 
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
