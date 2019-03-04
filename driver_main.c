@@ -34,14 +34,16 @@ _PARAM_MACRO(byte, chain_len, 1, "\tThe amount of 74HC595's chained together");
 _PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line (in ns)");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
-static struct Chip74HC595 chip;
-static struct device_internal dev;
 
 int device_open(struct inode* in, struct file* fp);
 int device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos);
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg);
+
+
+static struct Chip74HC595 chip;
+static struct device_internal dev;
 static struct file_operations driver_fops = {
 	.owner = THIS_MODULE,
 	.read = device_read,
@@ -50,6 +52,8 @@ static struct file_operations driver_fops = {
 	.release = device_close,
 	.unlocked_ioctl = device_ioctl
 };
+static bool device_already_open = false;
+static bool latch_on_write	= true;
 
 int init_module(){
 	int result = 0;
@@ -87,7 +91,6 @@ int init_chip(){
 	return 0;
 }
 
-static bool device_already_open = false;
 int device_close(struct inode* in, struct file* fp){
 	device_already_open = false;
 	return 0;
@@ -95,6 +98,7 @@ int device_close(struct inode* in, struct file* fp){
 int device_open(struct inode* in, struct file* fp){
 	if(device_already_open) return -1;
 	device_already_open = true;
+	latch_on_write = true;
 	return 0;
 }
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
@@ -110,18 +114,25 @@ ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 		//printk("%i, ", buf[i]);
 		writeb595(&chip, buf[i]);
 	}
-	latch595(&chip);
+	if(latch_on_write)
+		latch595(&chip);
 	//printk("%i] to 74HC595\n", buf[cnt - 1]);
 	return cnt;
 }
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	switch(cmd){
-		case IOCTL_RESET_595_CMD:
+		case IOCTL_RESET_595:
 			reset595(&chip);
 			latch595(&chip);
 			break;
-		case IOCTL_CHAIN_LEN_CMD:
+		case IOCTL_READ_CHAIN_LENGTH:
 			copy_to_user(arg, &chain_len, 1);
+			break;
+		case IOCTL_MANUAL_LATCH:
+			latch595(&chip);
+			break;
+		case IOCTL_SET_AUTO_LATCH:
+			latch_on_write = arg ? 1 : 0;
 			break;
 		default:
 			printk("Invalid ioctl call to device - %x w/ arg %lx\n", cmd, arg);

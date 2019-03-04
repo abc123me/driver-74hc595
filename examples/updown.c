@@ -45,7 +45,7 @@ int main(int argc, char** argv){
 	return 0;
 }
 int resetChain(int fd){
-	if(ioctl(fd, IOCTL_RESET_595_CMD)){
+	if(ioctl(fd, IOCTL_RESET_595)){
 		puts("Failed to reset chain!");
 		close(fd);
 		return 1;
@@ -64,7 +64,7 @@ int initFileDesc(){
 }
 uint8_t getChainLength(int fd){
 	uint8_t chain_len = 0;
-	if(ioctl(fd, IOCTL_CHAIN_LEN_CMD, &chain_len)){
+	if(ioctl(fd, IOCTL_READ_CHAIN_LENGTH, &chain_len)){
 		puts("Failed to retrieve chain length using ioctl()!");
 		return -1;
 	}
