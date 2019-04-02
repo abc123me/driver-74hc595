@@ -1,28 +1,51 @@
 name = mod595
+koname = $(name).ko
 obj-m += $(name).o
 $(name)-objs := driver_main.o 595.o device.o
 KVERSION = $(shell uname -r)
 used = $(shell lsmod | grep $(name) | awk '{print $$1}' )
-args =
+load_args =
 
-all:
+
+
+compile:
 	make -C /lib/modules/$(KVERSION)/build M=`pwd` modules
 clean:
 	make -C /lib/modules/$(KVERSION)/build M=`pwd` clean
-remake:
-	make clean
-	make all
-ifeq ($(used), mod595)
-load:
-	make unload
-	make load
-else
-load:
-	sudo insmod $(name).ko clock_pin=15 data_pin=16 latch_pin=14 chain_len=2 delay=1000 $(args)
-endif
 unload:
 	sudo rmmod $(name)
-reload:
-	make load
 info:
-	modinfo $(name).ko
+	modinfo $(koname)
+opts = $(shell cat options)
+_load:
+	sudo insmod $(koname) $(opts) $(load_args)
+
+
+
+install_dir = /lib/modules/$(KVERSION)/kernel/drivers/
+install_loc = $(install_dir)/$(koname)
+modules_conf_loc = /etc/modules-load.d/$(name).conf
+modprobe_conf_loc = /etc/modprobe.d/$(name).conf
+
+install:	uninstall
+	cp $(koname) $(install_dir)
+	chown root:root $(install_loc)
+	chmod 644 $(install_loc)
+	echo $(name) > $(modules_conf_loc)
+	echo "options $(opts)" > $(modprobe_conf_loc)
+	depmod
+uninstall:
+	rm -f $(install_loc)
+	rm -f $(modules_conf_loc)
+	rm -f $(modprobe_conf_loc)
+
+
+
+ifeq ($(used), mod595)
+load:		unload _load
+else
+load:		_load
+endif
+recompile: 	clean compile
+reload: 	load
+all:		compile
