@@ -32,7 +32,7 @@ install:	uninstall
 	chown root:root $(install_loc)
 	chmod 644 $(install_loc)
 	echo $(name) > $(modules_conf_loc)
-	echo "options $(opts)" > $(modprobe_conf_loc)
+	echo "options $(name) $(opts)" > $(modprobe_conf_loc)
 	depmod
 uninstall:
 	rm -f $(install_loc)
