@@ -26,12 +26,14 @@ int init_chip(void);
 
 //Hack to get definition for a byte as linux/module.h needs the "byte" type to take 8 bit ints
 typedef uint8_t byte;
+typedef char* charp;
 _PARAM_MACRO(byte, clock_pin, 3, "\tThe clock pin of the 74HC595");
 _PARAM_MACRO(byte, latch_pin, 1, "\tThe latch pin of the 74HC595");
 _PARAM_MACRO(byte, data_pin,  0, "\tThe data pin of the 74HC595");
 _PARAM_MACRO(int, reset_pin,  -1, "\tThe reset pin of the 74HC595, -1 for none");
 _PARAM_MACRO(byte, chain_len, 1, "\tThe amount of 74HC595's chained together");
 _PARAM_MACRO(ulong, delay, 50, "\t\tThe amount of delay used for the clock line (in ns)");
+_PARAM_MACRO(charp, device_name, "chip74hc595", "\tThe device name, defaults to \"chip74hc595\" (appears in /dev)");
 //_PARAM_MACRO(bool, clock_invert, 0, "Iverts the clock pin of the 74HC595");
 
 
@@ -40,7 +42,7 @@ int device_close(struct inode* in, struct file* fp);
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos);
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos);
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg);
-
+int alphanumeric(char* str);
 
 static struct Chip74HC595 chip;
 static struct device_internal dev;
@@ -57,7 +59,21 @@ static bool latch_on_write	= true;
 
 int init_module(){
 	int result = 0;
-	result = register_device(&dev, "chip74hc595", &driver_fops);
+	char* dev_name = device_name;
+	if(dev_name == 0) {
+		printk("device_name cannot be null!");
+		return -EINVAL;
+	}
+	int len = strlen(dev_name);
+	if(len <= 2 || len >= 20) {
+		printk("device_name must be between 2 and 20 characters");
+		return -EINVAL;
+	}
+	if(!alphanumeric(dev_name)){
+		printk("String must be alphanumeric");
+		return -EINVAL;
+	}
+	result = register_device(&dev, dev_name, &driver_fops);
 	if(result){
 		printk("register_device() returned a non-zero exit code!\n");
 		goto exit;
@@ -80,7 +96,7 @@ void cleanup_module(){
 int init_chip(){
 	//clock (3), data(0), latch(1)
 	uint32_t delay_u32 = delay;
-	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins)\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32);
+	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins), device_name=%s\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32, device_name);
 	_CHIP_CALL_MACRO(init595(&chip, clock_pin, data_pin, latch_pin, chain_len), "Error initializing chip");
 	if(reset_pin > 0){
 		printk("Custom reset pin specified (%i)\n", reset_pin);
@@ -139,4 +155,17 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 			return -1;
 	}
 	return 0;
+}
+int alphanumeric(char* str){
+	int len = strlen(str);
+	if(len <= 0) return 0;
+	for(int i = 0; i < len; i++){
+		char c = str[i];
+		bool l = c >= 'a' && c <= 'z';
+		bool u = c >= 'A' && c <= 'Z';
+		bool n = c >= '0' && c <= '9';
+		if(!(l || u || n || c == '_'))
+			return 0;
+	}
+	return 1;
 }

@@ -5,7 +5,7 @@ int register_device(struct device_internal* d, char* name, struct file_operation
 	d->name = name;
 	d->fops = fops;
 	int major = register_chrdev(0, name, fops);
-	if(major < 0){
+	if(major <= 0){
 		printk("Failed to register character device (errorcode = %i)\n", major);
 		return major;
 	} else d->major = major;
@@ -27,7 +27,7 @@ int register_device(struct device_internal* d, char* name, struct file_operation
 	return 0;
 }
 void unregister_device(struct device_internal* d){
-	if(d == NULL) return; 
+	if(d == NULL) return;
 	printk("Unregistering device\n");
 	if(d->major != 0)
 		unregister_chrdev(d->major, d->name);
