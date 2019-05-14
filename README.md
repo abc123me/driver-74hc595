@@ -9,14 +9,15 @@ A linux kernel driver for the 74HC595
 3. Read/Write to `/dev/chip74hc595`
 
 ### Module parameters
-Name      | Description                                         | Range        | Default value
-----------|-----------------------------------------------------|--------------|---------------
-clock_pin | Sets the clock pin                                  | `uint8_t`    | 3
-data_pin  | Sets the data pin                                   | `uint8_t`    | 0
-latch_pin | Sets the latch pin                                  | `uint8_t`    | 1
-reset_pin | Sets the reset pin, if the pin < 0 then its ignored | `int16_t`    | -1 
-chain_len | Sets the amount of shift registers chained together | `uint8_t`    | 1
-delay     | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
+Name        | Description                                         | Range        | Default value
+------------|-----------------------------------------------------|--------------|---------------
+clock_pin   | Sets the clock pin                                  | `uint8_t`    | 3
+data_pin    | Sets the data pin                                   | `uint8_t`    | 0
+latch_pin   | Sets the latch pin                                  | `uint8_t`    | 1
+reset_pin   | Sets the reset pin, if the pin < 0 then its ignored | `int16_t`    | -1 
+chain_len   | Sets the amount of shift registers chained together | `uint8_t`    | 1
+delay       | Sets the clock's delay (in nanoseconds)             | `uint64_t`   | 50
+device_name | Sets the device name, alphanumeric, 2-20 chars      | `char*`      | chip74hc595
 
 ### IOCTL syscall commands
 Name              | Description                         | Command (ioctl_595.h)     | Arguments
