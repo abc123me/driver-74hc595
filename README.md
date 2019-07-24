@@ -33,11 +33,10 @@ Hardware         | Kernel   | Dstribution       | Status
 OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
 Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
 Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-OrangePi Zero    | 3.4.113  | Armbian Xenial    | ![#eeff00](https://placehold.it/15/eeff00/000000?text=+) Deprecated
-Generic boards   | 4.*      | N/A               | ![#ccff00](https://placehold.it/15/ccff00/000000?text=+) Supported
-Generic boards   | 3.*      | N/A               | ![#eeff00](https://placehold.it/15/eeff00/000000?text=+) Deprecated
-Generic boards   | <3.0     | N/A               | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) Unsupported
-Generic boards   | >5.0     | N/A               | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) Unsupported
+OrangePi Zero    | 3.4.113  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
+Generic boards   | 3.0-5.0  | N/A               | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
+Generic boards   | <3.0     | N/A               | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Unsupported
+Generic boards   | >5.0     | N/A               | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) Untested
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
