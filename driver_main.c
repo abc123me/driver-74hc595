@@ -157,9 +157,9 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 	return 0;
 }
 int alphanumeric(char* str){
-	int len = strlen(str);
+	int i = 0, len = strlen(str);
 	if(len <= 0) return 0;
-	for(int i = 0; i < len; i++){
+	for(i = 0; i < len; i++){
 		char c = str[i];
 		bool l = c >= 'a' && c <= 'z';
 		bool u = c >= 'A' && c <= 'Z';
