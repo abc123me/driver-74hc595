@@ -44,4 +44,5 @@ Generic boards   | >5.0     | N/A               | ![#ffff00](https://placehold.i
    - Easily fixed by using `setbuf(fp, NULL);` to disable buffering
    - There is probably a flag or something I can set to fix this pernamently
  - No support for output enable pin
+ - Please report any issues to the [issues](https://github.com/abc123me/driver-74hc595/issues) section!
 
