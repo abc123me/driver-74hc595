@@ -34,7 +34,6 @@ void unregister_device(struct device_internal* d){
 	if(d->cl == NULL)
 		return;
 	device_destroy(d->cl, d->devt);
-	class_unregister(d->cl);
 	class_destroy(d->cl);
 	printk("Unregistered device\n");
 }
