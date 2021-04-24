@@ -2,6 +2,7 @@
 #include "linux/kernel.h"
 #include "linux/types.h"
 #include "linux/uaccess.h"
+#include "linux/cdev.h"
 
 #include "device.h"
 #include "595.h"
