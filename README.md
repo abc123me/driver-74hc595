@@ -35,7 +35,7 @@ OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00FF00](icons/00FF00_15.png
 Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00FF00](icons/00FF00_15.png) Well Supported
 Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00FF00](icons/00FF00_15.png) Well Supported
 BananaPi M2 Zero | 5.15.69  | Armbian Buster    | ![#00FF00](icons/00FF00_15.png) Well Supported
------------------|----------|-------------------|---------------------------------------------------------------------
+                 |          |                   |
 Generic boards   | 3.X      | N/A               | ![#00FF00](icons/AAFF00_15.png) Supported, Needs testing
 Generic boards   | 4.X      | N/A               | ![#00FF00](icons/00FF00_15.png) Well Supported
 Generic boards   | 5.X      | N/A               | ![#FFFF00](icons/AAFF00_15.png) Supported, Needs testing
