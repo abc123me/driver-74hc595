@@ -30,14 +30,14 @@ Automatic latch   | Enables/Disables automatic latching | `IOCTL_SET_AUTO_LATCH`
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
 -----------------|----------|-------------------|---------------------------------------------------------------------
-OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-OrangePi Zero    | 3.4.113  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-BananaPi M2 Zero | 5.15.69  | Armbian Buster    | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-Generic boards   | 3.0-5.0  | N/A               | ![#00ff00](https://placehold.it/15/00ff00/000000?text=+) Supported
-Generic boards   | >5.0     | N/A               | ![#ffff00](https://placehold.it/15/ffff00/000000?text=+) Supported (mostly)
-Generic boards   | <3.0     | N/A               | ![#ff0000](https://placehold.it/15/ff0000/000000?text=+) Unsupported
+OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00ff00](https://placehold.it/15/00FF00/00FF00) Supported
+Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00FF00/00ff00) Supported
+Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00ff00](https://placehold.it/15/00FF00/000000) Supported
+OrangePi Zero    | 3.4.113  | Armbian Xenial    | ![#00ff00](https://placehold.it/15/00FF00/000000) Supported
+BananaPi M2 Zero | 5.15.69  | Armbian Buster    | ![#00ff00](https://placehold.it/15/00FF00/000000) Supported
+Generic boards   | 3.0-5.0  | N/A               | ![#00ff00](https://placehold.it/15/00FF00/000000) Supported
+Generic boards   | >5.0     | N/A               | ![#CCff00](https://placehold.it/15/CCFF00/000000) Mostly supported
+Generic boards   | <3.0     | N/A               | ![#ff0000](https://placehold.it/15/FF0000/000000) Unsupported
 
 ## Known Issues
  - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
