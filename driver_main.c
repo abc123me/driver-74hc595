@@ -20,6 +20,7 @@
 		return -1;\
 	}\
 }
+#define DEV_WRITE_BUFLEN 128
 
 int init_module(void);
 void cleanup_module(void);
@@ -57,6 +58,7 @@ static struct file_operations driver_fops = {
 };
 static bool device_already_open = false;
 static bool latch_on_write	= true;
+static char deviceWriteBuf[DEV_WRITE_BUFLEN];
 
 int init_module(){
 	int result = 0;
@@ -123,17 +125,20 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 	return 0;
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
-	//printk("Wrote [");
+//	printk("Wrote [");
 	if(cnt <= 0)
 		return 0;
+	if(cnt > DEV_WRITE_BUFLEN)
+		return 0;
+	copy_from_user(deviceWriteBuf, buf, cnt);
 	int64_t i;
 	for(i = cnt - 1; i >= 0; i--){
-		//printk("%i, ", buf[i]);
-		writeb595(&chip, buf[i]);
+//		printk("%i, ", deviceWriteBuf[i]);
+		writeb595(&chip, deviceWriteBuf[i]);
 	}
 	if(latch_on_write)
 		latch595(&chip);
-	//printk("%i] to 74HC595\n", buf[cnt - 1]);
+//	printk("%i] to 74HC595\n", deviceWriteBuf[cnt - 1]);
 	return cnt;
 }
 long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
