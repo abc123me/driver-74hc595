@@ -121,7 +121,7 @@ int device_open(struct inode* in, struct file* fp){
 	return 0;
 }
 ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
-	printk("Read\n");
+//	printk("Read\n");
 	return 0;
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
