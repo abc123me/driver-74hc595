@@ -30,9 +30,9 @@ Automatic latch   | Enables/Disables automatic latching | `IOCTL_SET_AUTO_LATCH`
 ## Tested configurations
 Hardware         | Kernel   | Dstribution       | Status
 -----------------|----------|-------------------|---------------------------------------------------------------------
-OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00FF00](icons/00FF00) Supported
-Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00FF00](icons/00FF00) Supported
-Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00FF00](icons/00FF00) Supported
+OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00FF00](icons/00FF00.png) Supported
+Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00FF00](icons/00FF00.png) Supported
+Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00FF00](icons/00FF00.png) Supported
 OrangePi Zero    | 3.4.113  | Armbian Xenial    | ![#00FF00](icons/00FF00.png) Supported
 BananaPi M2 Zero | 5.15.69  | Armbian Buster    | ![#00FF00](icons/00FF00.png) Supported
 Generic boards   | 3.0-5.0  | N/A               | ![#00FF00](icons/00FF00.png) Supported
