@@ -6,7 +6,7 @@ A linux kernel driver for the 74HC595
 
 1. Compile with `make`
 2. Insert the kernel module into the kernel using `insmod driver.ko <parameters>`
-3. Read/Write to `/dev/chip74hc595`
+3. Read / Write to `/dev/chip74hc595`
 
 ### Module parameters
 Name        | Description                                         | Range        | Default value
@@ -35,18 +35,16 @@ OrangePi Zero    | 4.14     | Armbian Bionic    | ![#00FF00](icons/00FF00_15.png
 Raspberry Pi 2   | 4.14     | Raspbian Stretch  | ![#00FF00](icons/00FF00_15.png) Well Supported
 Raspberry Pi 3B+ | 4.19.57  | Raspbian Stretch  | ![#00FF00](icons/00FF00_15.png) Well Supported
 BananaPi M2 Zero | 5.15.69  | Armbian Buster    | ![#00FF00](icons/00FF00_15.png) Well Supported
-                 |          |                   |
-Generic boards   | 3.X      | N/A               | ![#00FF00](icons/AAFF00_15.png) Supported, Needs testing
-Generic boards   | 4.X      | N/A               | ![#00FF00](icons/00FF00_15.png) Well Supported
-Generic boards   | 5.X      | N/A               | ![#FFFF00](icons/AAFF00_15.png) Supported, Needs testing
-Generic boards   | >5.2     | N/A               | ![#FF0000](icons/FFFF00_15.png) Supported, Untested
-Generic boards   | <3.0     | N/A               | ![#FF0000](icons/FF0000_15.png) Unsupported
+Generic boards   | 3.X      | Any               | ![#00FF00](icons/AAFF00_15.png) Supported, Needs testing
+Generic boards   | 4.X      | Any               | ![#00FF00](icons/00FF00_15.png) Well Supported
+Generic boards   | 5.X      | Any               | ![#FFFF00](icons/AAFF00_15.png) Supported, Needs testing
+Generic boards   | >5.2     | Any               | ![#FF0000](icons/FFFF00_15.png) Supported, Untested
+Generic boards   | <3.0     | Any               | ![#FF0000](icons/FF0000_15.png) Unsupported
 
-## Known Issues
- - Dosen't work with `fwrite` but works with `write` (even though they are the same system call)
-   - Caused by fwrite buffering when it's not supposed to
-   - Easily fixed by using `setbuf(fp, NULL);` to disable buffering
-   - There is probably a flag or something I can set to fix this pernamently
- - No support for output enable pin
+## Known Issues and concerns
+ - Dosen't work with `fwrite` (even though they use the same base system call)
+   - Caused by fwrite's buffering when it's not supposed to
+   - Buffering is easily disabled by using `setbuf(fp, NULL);`, this fixes the problem
+ - No support for output enable pin, this should be tied to ground or another GPIO
  - Please report any issues to the [issues section!](https://github.com/abc123me/driver-74hc595/issues)
 
