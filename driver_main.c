@@ -93,7 +93,7 @@ int init_module(){
 void cleanup_module(){
 	unregister_device(&dev);
 	free595(&chip);
-	printk("Goodbye world 1.\n");
+	printk("Driver unloaded!\n");
 }
 
 int init_chip(){
