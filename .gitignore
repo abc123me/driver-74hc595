@@ -5,3 +5,8 @@
 *.cmd
 .tmp_versions
 mod595.ko
+
+fwrite_test
+write_test
+ioctl_test
+open_test
