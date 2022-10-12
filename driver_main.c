@@ -16,7 +16,7 @@
 #define _CHIP_CALL_MACRO(func, err_msg) {\
 	uint8_t res = func;\
 	if(res) {\
-		printk("%s (%s)!\n", err_msg, getReason595(res));\
+		printk("[mod595 err] %s (%s)!\n", err_msg, getReason595(res));\
 		return -1;\
 	}\
 }
@@ -64,26 +64,26 @@ int init_module(){
 	int result = 0;
 	char* dev_name = device_name;
 	if(dev_name == 0) {
-		printk("device_name cannot be null!");
+		printk("[mod595 err] device_name cannot be null!");
 		return -EINVAL;
 	}
 	int len = strlen(dev_name);
 	if(len <= 2 || len >= 20) {
-		printk("device_name must be between 2 and 20 characters");
+		printk("[mod595 err] device_name must be between 2 and 20 characters");
 		return -EINVAL;
 	}
 	if(!alphanumeric(dev_name)){
-		printk("String must be alphanumeric");
+		printk("[mod595 err] device_name must be alphanumeric");
 		return -EINVAL;
 	}
 	result = register_device(&dev, dev_name, &driver_fops);
 	if(result){
-		printk("register_device() returned a non-zero exit code!\n");
+		printk("[mod595 err] register_device() returned a non-zero exit code!\n");
 		goto exit;
 	}
 	result = init_chip();
 	if(result){
-		printk("init_chip() returned a non-zero exit code!\n");
+		printk("[mod595 err] init_chip() returned a non-zero exit code!\n");
 		goto exit;
 	}
 	exit:
@@ -93,16 +93,16 @@ int init_module(){
 void cleanup_module(){
 	unregister_device(&dev);
 	free595(&chip);
-	printk("Driver unloaded!\n");
+	printk("[mod595 info] Driver unloaded!\n");
 }
 
 int init_chip(){
 	//clock (3), data(0), latch(1)
 	uint32_t delay_u32 = delay;
-	printk("Intializing clock=%i, data=%i, latch=%i (%i @ %ins), device_name=%s\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32, device_name);
+	printk("[mod595 info] Intializing clock=%i, data=%i, latch=%i (%i @ %ins), device_name=%s\n", clock_pin, data_pin, latch_pin, chain_len, delay_u32, device_name);
 	_CHIP_CALL_MACRO(init595(&chip, clock_pin, data_pin, latch_pin, chain_len), "Error initializing chip");
 	if(reset_pin > 0){
-		printk("Custom reset pin specified (%i)\n", reset_pin);
+		printk("[mod595 info] Custom reset pin specified (%i)\n", reset_pin);
 		_CHIP_CALL_MACRO(setResetPin595(&chip, (uint8_t) reset_pin), "Error setting the reset pin");
 	}
 	_CHIP_CALL_MACRO(setSpeed595(&chip, delay_u32), "Error setting speed");
@@ -126,13 +126,13 @@ ssize_t device_read(struct file* fp, char* buf, size_t cnt, loff_t* pos){
 }
 ssize_t device_write(struct file* fp, const char* buf, size_t cnt, loff_t* pos){
 //	printk("Wrote [");
-	if(cnt <= 0)
+	if(cnt <= 0 || cnt > DEV_WRITE_BUFLEN) {
+		printk(cnt <= 0 ? "[mod595 warn] Buffer underflow on write" : "[mod595 warn] Buffer overflow on write");
 		return 0;
-	if(cnt > DEV_WRITE_BUFLEN)
-		return 0;
+	}
 	copy_from_user(deviceWriteBuf, buf, cnt);
 	int64_t i;
-	for(i = cnt - 1; i >= 0; i--){
+	for(i = cnt - 1; i >= 0; i--) {
 //		printk("%i, ", deviceWriteBuf[i]);
 		writeb595(&chip, deviceWriteBuf[i]);
 	}
@@ -157,7 +157,7 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 			latch_on_write = arg ? 1 : 0;
 			break;
 		default:
-			printk("Invalid ioctl call to device - %x w/ arg %lx\n", cmd, arg);
+			printk("[mod595 err] Invalid ioctl call to device - %x w/ arg %lx\n", cmd, arg);
 			return -1;
 	}
 	return 0;

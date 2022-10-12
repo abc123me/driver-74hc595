@@ -19,6 +19,7 @@ info:
 opts = $(shell cat options)
 _load:
 	sudo insmod $(koname) $(opts) $(load_args)
+	sudo dmesg | tail
 
 
 
