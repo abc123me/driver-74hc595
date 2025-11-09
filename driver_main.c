@@ -148,7 +148,7 @@ long device_ioctl(struct file *f, unsigned int cmd, unsigned long arg){
 			latch595(&chip);
 			break;
 		case IOCTL_READ_CHAIN_LENGTH:
-			copy_to_user(arg, &chain_len, 1);
+			copy_to_user((void*) arg, &chain_len, 1);
 			break;
 		case IOCTL_MANUAL_LATCH:
 			latch595(&chip);
