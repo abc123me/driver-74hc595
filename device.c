@@ -13,7 +13,7 @@ int register_device(struct device_internal* d, char* name, struct file_operation
 	} else d->major = major;
 	printk("[mod595 info] Registered device with major number = %i and minor numbers 0...255\n", major);
 	dev_t devt = MKDEV(major, 0);
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 0, 0)
 	struct class* cl = class_create(THIS_MODULE, "new");
 #else
 	struct class* cl = class_create("new");
