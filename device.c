@@ -1,5 +1,7 @@
 #include "device.h"
 
+#include "generated/uapi/linux/version.h"
+
 int register_device(struct device_internal* d, char* name, struct file_operations* fops){
 	printk("[mod595 info] Registering device!\n");
 	d->name = name;
@@ -11,7 +13,11 @@ int register_device(struct device_internal* d, char* name, struct file_operation
 	} else d->major = major;
 	printk("[mod595 info] Registered device with major number = %i and minor numbers 0...255\n", major);
 	dev_t devt = MKDEV(major, 0);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
 	struct class* cl = class_create(THIS_MODULE, "new");
+#else
+	struct class* cl = class_create("new");
+#endif
 	if(cl == NULL){
 		printk("[mod595 err] Failed to create a class");
 		return -1;
